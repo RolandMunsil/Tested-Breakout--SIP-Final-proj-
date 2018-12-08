@@ -125,47 +125,7 @@ public class BreakoutProgram extends GraphicsProgram {
                     break;
                 }
 
-                //Bounce off of screen bounds
-                if (ball.getRightX() > WINDOW_WIDTH || ball.getX() < 0) {
-                    ball.reverseVelX();
-                }
-                if (ball.getY() < 0) {
-                    ball.reverseVelY();
-                }
-
-                //Handle collision with paddle
-                if (ball.getVelY() > 0 && ball.intersects(paddle)) {
-                    ball.reverseVelY();
-
-                    double ballCenterX = ball.getX() + ball.getRadius();
-                    double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
-
-                    //The ball's velocity will change more the further it is from the center of the paddle
-                    double factor = (ballCenterX - paddleCenterX) / 10;
-                    double newVelX = ball.getVelX() + factor;
-
-                    //Clamp to between -max x and max x
-                    newVelX = Math.min(BALL_MAX_X_VELOCITY, Math.max(newVelX, -BALL_MAX_X_VELOCITY));
-                    ball.setVelX(newVelX);
-                }
-
-                //Handle collision with bricks
-                for (int i = 0; i < bricks.size(); i++) {
-                    Brick brick = bricks.get(i);
-
-                    if (ball.intersects(brick)) {
-                        ball.handleCollision(brick);
-                        //Remove it from the screen
-                        remove(brick);
-                        //Remove it from the ArrayList
-                        bricks.remove(brick);
-                        //Only allow the ball to collide with one brick per frame
-                        break;
-                    }
-                }
-
-                //Finally, move the ball
-                ball.applyVelocity();
+                doOneStep();
 
                 long endTime = System.currentTimeMillis();
                 pause(Math.max(0, FRAME_LENGTH_MILLIS - (endTime - startTime) - 1));
@@ -190,6 +150,50 @@ public class BreakoutProgram extends GraphicsProgram {
                 }
             }
         }
+    }
+
+    void doOneStep() {
+        //Bounce off of screen bounds
+        if (ball.getRightX() > WINDOW_WIDTH || ball.getX() < 0) {
+            ball.reverseVelX();
+        }
+        if (ball.getY() < 0) {
+            ball.reverseVelY();
+        }
+
+        //Handle collision with paddle
+        if (ball.getVelY() > 0 && ball.intersects(paddle)) {
+            ball.reverseVelY();
+
+            double ballCenterX = ball.getX() + ball.getRadius();
+            double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
+
+            //The ball's velocity will change more the further it is from the center of the paddle
+            double factor = (ballCenterX - paddleCenterX) / 10;
+            double newVelX = ball.getVelX() + factor;
+
+            //Clamp to between -max x and max x
+            newVelX = Math.min(BALL_MAX_X_VELOCITY, Math.max(newVelX, -BALL_MAX_X_VELOCITY));
+            ball.setVelX(newVelX);
+        }
+
+        //Handle collision with bricks
+        for (int i = 0; i < bricks.size(); i++) {
+            Brick brick = bricks.get(i);
+
+            if (ball.intersects(brick)) {
+                ball.handleCollision(brick);
+                //Remove it from the screen
+                remove(brick);
+                //Remove it from the ArrayList
+                bricks.remove(brick);
+                //Only allow the ball to collide with one brick per frame
+                break;
+            }
+        }
+
+        //Finally, move the ball
+        ball.applyVelocity();
     }
 
     /**
