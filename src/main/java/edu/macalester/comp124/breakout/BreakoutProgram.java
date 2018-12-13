@@ -107,29 +107,7 @@ public class BreakoutProgram extends GraphicsProgram {
         while(true) {
             centerText.show("Click to start.", Color.BLACK);
             waitForInputThenStart();
-            boolean hasWon;
-            while (true) { //Do the game loop
-                long startTime = System.currentTimeMillis();
-
-                movePaddleWithMouse();
-
-                //If the ball goes past the bottom of the screen, the player has lost
-                if (ball.getY() > WINDOW_HEIGHT) {
-                    hasWon = false;
-                    break;
-                }
-
-                //If there are no more bricks, the player has won
-                if(bricks.size() == 0) {
-                    hasWon = true;
-                    break;
-                }
-
-                doOneStep();
-
-                long endTime = System.currentTimeMillis();
-                pause(Math.max(0, FRAME_LENGTH_MILLIS - (endTime - startTime) - 1));
-            }
+            boolean hasWon = playOneRound();
 
             //Game loop is over, decide what to do based on whether or not player has won
             if(hasWon) {
@@ -150,6 +128,35 @@ public class BreakoutProgram extends GraphicsProgram {
                 }
             }
         }
+    }
+
+    boolean playOneRound() {
+        while (true) { //Do the game loop
+            long startTime = System.currentTimeMillis();
+
+            Boolean x = roundInnerLoop();
+            if (x != null) return x;
+
+            long endTime = System.currentTimeMillis();
+            pause(Math.max(0, FRAME_LENGTH_MILLIS - (endTime - startTime) - 1));
+        }
+    }
+
+    Boolean roundInnerLoop() {
+        movePaddleWithMouse();
+
+        //If the ball goes past the bottom of the screen, the player has lost
+        if (ball.getY() > WINDOW_HEIGHT) {
+            return false;
+        }
+
+        //If there are no more bricks, the player has won
+        if(bricks.size() == 0) {
+            return true;
+        }
+
+        doOneStep();
+        return null;
     }
 
     void doOneStep() {
