@@ -72,4 +72,16 @@ public class CenteredLabel {
     public void hide() {
         label.setVisible(false);
     }
+
+    /**
+     * Getter for font of label
+     * @return font
+     */
+    public Font getFontofLabel(){
+        return label.getFont();
+    }
+
+    public GLabel getLabel(){
+        return label;
+    }
 }

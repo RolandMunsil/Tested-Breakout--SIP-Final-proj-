@@ -26,6 +26,7 @@ public class InputManager implements MouseListener, MouseMotionListener, KeyList
     public GPoint getMousePosition() { return mousePos; }
     public double getMouseX() { return mousePos.getX(); }
     public double getMouseY() { return mousePos.getY(); }
+    public void setMousePos(double xPos, double yPos) { this.mousePos.setLocation(xPos, yPos);}
 
     /**
      * Constructs an InputManager that will listen to input on the given GraphicsProgram

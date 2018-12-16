@@ -1,12 +1,12 @@
 package edu.macalester.comp124.breakout;
 
 import acm.graphics.GLabel;
-import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
 import java.awt.*;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 
 
 public class TestCenteredLabel extends GraphicsProgram{
@@ -28,6 +28,17 @@ public class TestCenteredLabel extends GraphicsProgram{
     @Test
     public void constructorSetsFontSize(){
         constructCenteredLabel();
+        Font font = centeredLabel.getFontofLabel();
+        assertEquals(EXPECTED_FONT_SIZE, font.getSize());
     }
+
+    @Test
+    public void contructorHidesLabel(){
+        constructCenteredLabel();
+        testLabel = centeredLabel.getLabel();
+        assertFalse(testLabel.isVisible());
+    }
+
+
 
 }

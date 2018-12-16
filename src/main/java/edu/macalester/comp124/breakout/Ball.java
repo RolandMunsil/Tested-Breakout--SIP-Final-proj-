@@ -15,6 +15,7 @@ public class Ball extends GOval {
 
     private GPoint prevTopLeft;
     public GPoint getPrevTopLeft()   { return prevTopLeft; }
+    public void setPrevTopLeft(GPoint prevTopLeft)   { this.prevTopLeft = prevTopLeft;}
 
     private double velX;
     public double getVelX()          { return velX; }
